@@ -105,7 +105,7 @@ def trade_sim(imoney, ihold, trades, results, position):
 
 def main():
     Weekday = 'Tuesday'
-    inpath = 'C:\\Users\\xulid\\Desktop\\IVOL Result\\Skew_'+ Weekday +'_to_'+Weekday+ '/'
+    inpath = ''+ Weekday +'_to_'+Weekday+ '/'
     option_files = [f for f in listdir(inpath) if isfile(join(inpath, f))] # read files in the folder
     record_df = portfolio_construct(option_files, inpath)
     combo = portfolio_summary(record_df)
