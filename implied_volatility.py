@@ -19,38 +19,38 @@ import math
 
 
 ######################################### || Define Some Functions || ####################################################################
-# Define a function to calculate the vega
-#which is also the derivative of option with respect to sigma
 def est_vega(S, K, r, sigma, T):
-    
+    """ Define a function to calculate the vega
+        which is also the derivative of option with respect to sigma
+    """    
     d = (np.log(S/K) + (r + 0.5 * sigma* sigma)* T) / (sigma * np.sqrt(T))
     vega = S * np.sqrt(T) * norm.pdf(d)
     
     return vega
     
-# Define a function of Black_Scholes for call option(without dividend)
 def BS_call(S, K, r, sigma, T):
-    
+    """Define a function of Black_Scholes for call option(without dividend)
+    """
     d1 = (np.log(S / K) + (r + 0.5 * np.power(sigma, 2))* T) / sigma / np.sqrt(T)
     d2 = d1 - sigma*np.sqrt(T)        
     C = S * norm.cdf(d1) - K * np.exp(-r * T) * norm.cdf(d2)
     return C
 
-# Define a function of Black_Scholes for put option(without dividend)
 def BS_put(S, K, r, sigma, T):
-    
+    """ Define a function of Black_Scholes for put option(without dividend)
+    """
     d1 = (np.log(S / K) + (r + 0.5 * np.power(sigma, 2)) * T) / sigma / np.sqrt(T)
     d2 = d1 - sigma*np.sqrt(T)                
     P = K * np.exp(-r * T) * norm.cdf(-d2) - S * norm.cdf(-d1)
     return P
     
-# Define newton_raphson method to estimate the implied volatitly for call option  
 def IV_call_newton_raphson(price_market, S, K, r, sigma, T):   
-    
-    n = 0 # For run times
+    """Define newton_raphson method to estimate the implied volatitly for call option  
+    """
+    n    = 0 # For run times
     # Check the difference between market price and BS price
-    diff = abs(price_market - BS_call(S, K, r, sigma, T)) 
-    sigmas = [] # initial sigmas list for saving the calculated volatility
+    diff    = abs(price_market - BS_call(S, K, r, sigma, T)) 
+    sigmas  = [] # initial sigmas list for saving the calculated volatility
     BS_diff = [] # initial a list for saving difference between market price and BS price 
 
     while ( abs(diff) > 0.001): # accuracy is round to third decimal place
@@ -70,9 +70,9 @@ def IV_call_newton_raphson(price_market, S, K, r, sigma, T):
         
     return sigma
 
-# Define newton_raphson method to estimate the implied volatitly for put option  
 def IV_put_newton_raphson(price_market, S, K, r, sigma, T):
-
+    """ Define newton_raphson method to estimate the implied volatitly for put option  
+    """
     n = 0 # For rum times
     diff = abs(price_market - BS_put(S, K, r, sigma, T))
     # Check the difference between market price and BS price
@@ -96,8 +96,9 @@ def IV_put_newton_raphson(price_market, S, K, r, sigma, T):
     return sigma
 
 
-# Define a function to count the days to expiration
 def count_day(startdate, enddate):
+    """# Define a function to count the days to expiration
+    """
     start = datetime.datetime(year=int(startdate[6:10]), month=int(startdate[0:2]), day=int(startdate[3:5]))
     end = datetime.datetime(year=int(enddate[6:10]), month=int(enddate[0:2]), day=int(enddate[3:5]))
     delta = end - start
@@ -106,7 +107,8 @@ def count_day(startdate, enddate):
     
 ######################################### || Main Code Part || ####################################################################
 def IVOL(raw_df, sp500list_df, r, check_prog = False):
-
+    """
+    """
     new_list = [] # this is to store list information of each option in the file   
     # Get the current day's s&p500 components
     sp500list = sp500list_df['Ticker'].tolist()        
